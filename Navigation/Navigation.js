@@ -5,13 +5,14 @@ import Login from "../Components/Login"
 import WaitingList from "../Components/WaitingList"
 import ValidateOperation from "../Components/ValidateOperation"
 import Menu from "../Components/Menu"
-import translate from "../utils/language"
+import InitiatedOperations from "../Components/InitiatedOperations"
+import OperationDetails from "../Components/OperationDetails"
+
 
 const waitingListStack = createStackNavigator({
     WaitingList_stack: {
         screen : WaitingList,
-        navigationOptions: {
-            title: "File d'attente",
+        navigationOptions: ({navigation}) => ({
             headerStyle: {
                 backgroundColor: "#FF0000"
             },
@@ -20,7 +21,7 @@ const waitingListStack = createStackNavigator({
                 fontWeight: "bold",
                 color: "#FFFFFF"
             }
-        }
+        })
     }
 
 });
@@ -28,8 +29,7 @@ const waitingListStack = createStackNavigator({
 const operationValidationStack = createStackNavigator({
     OperationValidation_stack: {
         screen : ValidateOperation,
-        navigationOptions: {
-            title: "Validation de transaction",
+        navigationOptions: ({navigation}) => ({
             headerStyle: {
                 backgroundColor: "#FF0000"
             },
@@ -38,18 +38,45 @@ const operationValidationStack = createStackNavigator({
                 fontWeight: "bold",
                 color: "#FFFFFF"
             }
-        }
+        })
     }
 
 });
 
 const menuStack = createStackNavigator({
-    menu_stack: {
+    Menu: {
         screen : Menu,
-        navigationOptions: {
+        navigationOptions: ({navigation}) => ({
             header: null
-        }
+        })
+    },
+    InitiatedOperations: {
+        screen: InitiatedOperations,
+        navigationOptions: ({navigation}) => ({
+            headerStyle: {
+                backgroundColor: "#FF0000"
+            },
+            headerTintColor: "#FFFFFF",
+            headerTitleStyle: {
+                fontWeight: "bold",
+                color: "#FFFFFF"
+            }
+        })
+    },
+    OperationDetails: {
+        screen: OperationDetails,
+        navigationOptions: ({navigation}) => ({
+            headerStyle: {
+                backgroundColor: "#FF0000"
+            },
+            headerTintColor: "#FFFFFF",
+            headerTitleStyle: {
+                fontWeight: "bold",
+                color: "#FFFFFF"
+            }
+        })
     }
+
 
 });
 
@@ -87,22 +114,21 @@ const tabbie = createBottomTabNavigator({
         inactiveTintColor: "#000000",
         activeBackgroundColor: "#ededed",
         showLabel: false
-    },
-    // animationEnabled: true
+    }
 });
 
 const stackie = createStackNavigator({
     Login: {
         screen : Login,
-        navigationOptions: {
+        navigationOptions: ({navigation}) => ({
             header: null
-        }
+        })
     },
     Home: {
         screen: tabbie,
-        navigationOptions: {
+        navigationOptions: ({navigation}) => ({
             header: null
-        }
+        })
     }
 
 });

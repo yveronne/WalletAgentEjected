@@ -5,6 +5,7 @@ import EStyleSheet from "react-native-extended-stylesheet"
 import translate from "../utils/language"
 import {setLocale , getCurrentLocale} from "../utils/language"
 import {logUser} from "../API/WalletApi"
+import {NavigationEvents} from "react-navigation"
 
 class Login extends React.Component {
 
@@ -14,7 +15,7 @@ class Login extends React.Component {
         this.username="";
         this.password="";
         this.state = {
-            isLoading: false
+            isLoading: true,
         };
     }
 
@@ -48,6 +49,7 @@ class Login extends React.Component {
                         [
                             {text: "Retour", style : "cancel"}
                         ]);
+                    this.setState({isLoading: false});
 
                 }
             })
@@ -94,28 +96,34 @@ class Login extends React.Component {
             <KeyboardAwareScrollView resetScrollToCoords={{ x: 0, y: 0 }}
                                      contentContainerStyle={styles.main_container}
                                      enableOnAndroid={false}>
+                <NavigationEvents
+                    onDidBlur={payload => {
+                        this.username="";
+                        this.password=""
+                    }}
+                />
                 {this._displayLoading()}
                 <Image style={styles.logo}
                        source={require("../Images/afrilandcmr.jpg")}
                        resizeMode="contain"/>
                 <View style={styles.welcome_text_container}>
-                    <Text style={styles.home_text}> Connexion </Text>
+                    <Text style={styles.home_text}>{translate("HOME_logText")}</Text>
                 </View>
                 <View style={styles.input_container}>
-                    <Text style={styles.text}>Nom d'utilisateur</Text>
-                    <TextInput style={styles.input} placeholder="Entrez votre nom d'utilisateur"
+                    <Text style={styles.text}>{translate("HOME_username")}</Text>
+                    <TextInput style={styles.input} placeholder={translate("HOME_usernamePlaceholder")}
                                onChangeText={(text) => this._usernameInputChanged(text)}/>
                 </View>
                 <View style={styles.input_container}>
-                    <Text style={styles.text}>Mot de passe</Text>
-                    <TextInput style={styles.input} placeholder="Entrez votre mot de passe"
+                    <Text style={styles.text}> {translate("HOME_password")} </Text>
+                    <TextInput style={styles.input} placeholder={translate("HOME_passwordPlaceholder")}
                                onChangeText={(text) => this._passwordInputChanged(text)}
                                secureTextEntry={true}/>
                 </View>
                 <View style={styles.button_container}>
                     <TouchableOpacity onPress={() => {this._login(this.username, this.password)}}
                                       style={styles.button}>
-                        <Text style={styles.button_text}> Se connecter </Text>
+                        <Text style={styles.button_text}> {translate("HOME_logButton")} </Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.language}>

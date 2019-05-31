@@ -4,10 +4,15 @@ import EStyleSheet from "react-native-extended-stylesheet"
 import {validateTransaction} from "../API/WalletApi"
 import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view"
 import QRCodeScanner from "react-native-qrcode-scanner"
+import translate from "../utils/language";
 
 
 
 class ValidateOperation extends React.Component {
+
+    static navigationOptions = () => ({
+        title: translate("NAVIGATION_validateOperation")
+    });
 
     constructor(props){
         super(props);
@@ -35,7 +40,7 @@ class ValidateOperation extends React.Component {
                 else if (response.error != null){
                     Alert.alert("Echec", response.error,
                         [
-                            {text: "Retour", style : "cancel"}
+                            {text: translate("back"), style : "cancel"}
                         ]);
                 }
             })
@@ -49,10 +54,10 @@ class ValidateOperation extends React.Component {
         var qrArray = (qr.data).split(":");
         this.code = qrArray[0];
         var amount = parseFloat(qrArray[1]);
-        Alert.alert("Confirmation", "Paiement de XAF "+amount ,
+        Alert.alert("Confirmation", translate("OPERATION_scanConfirmation") +amount ,
             [
-                {text: "Valider", onPress: () => this._validate()},
-                {text: "Annuler", style: "cancel"}
+                {text: translate("validate"), onPress: () => this._validate()},
+                {text: translate("cancelie"), style: "cancel"}
             ]);
     };
 
@@ -91,7 +96,7 @@ class ValidateOperation extends React.Component {
                                          contentContainerStyle={styles.main_container}
                                          enableOnAndroid={false}>
                     <View style={styles.phone_container}>
-                        <Text style={styles.text}>Code de la transaction</Text>
+                        <Text style={styles.text}> {translate("OPERATION_code")} </Text>
                         <TextInput placeholder="Code"
                                    onChangeText={(text) => this._codeInputChanged(text)}
                                    autoFocus={false}
@@ -101,13 +106,13 @@ class ValidateOperation extends React.Component {
                     <View style={styles.button_container}>
                         <TouchableOpacity onPress={() => {this._validate()}}
                                           style={styles.button}>
-                            <Text style={styles.button_text}>Valider </Text>
+                            <Text style={styles.button_text}> {translate("validate")} </Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.button_container}>
                         <TouchableOpacity onPress={() => {this.openScanner()}}
                                           style={styles.button}>
-                            <Text style={styles.button_text}>Scanner le code QR</Text>
+                            <Text style={styles.button_text}> {translate("OPERATION_scan")} </Text>
                         </TouchableOpacity>
                     </View>
                 </KeyboardAwareScrollView>
@@ -117,6 +122,7 @@ class ValidateOperation extends React.Component {
             return (
                 <QRCodeScanner
                     onRead={this.onScan}
+                    showMarker={true}
                 />
             )
         }

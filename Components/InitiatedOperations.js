@@ -1,15 +1,15 @@
 import React from "react"
 import moment from "moment"
-import {View, FlatList, ActivityIndicator, Alert} from "react-native"
-import EStyleSheet from "react-native-extended-stylesheet"
+import {View, FlatList, ActivityIndicator} from "react-native"
 import {SearchBar, ListItem} from "react-native-elements"
-import {getWaitingList, markAsServed} from "../API/WalletApi"
+import {getInitiatedOperations} from "../API/WalletApi"
 import translate from "../utils/language"
+import EStyleSheet from "react-native-extended-stylesheet";
 
-class WaitingList extends React.Component {
+class InitiatedOperations extends React.Component {
 
     static navigationOptions = () => ({
-        title: translate("NAVIGATION_waitingList")
+        title: translate("NAVIGATION_initiatedOperations")
     });
 
     constructor(props){
@@ -21,31 +21,8 @@ class WaitingList extends React.Component {
         this.array = [];
     }
 
-    _serve(id){
-        markAsServed(id, global.token)
-            .then(response => {
-                if (response.error == null){
-                    const removedItemIndex = this.state.list.findIndex(item => item.id === id);
-                    var listie = this.state.list;
-                    if (removedItemIndex !== -1) {
-                        listie.splice(removedItemIndex, 1);
-                        this.setState({
-                            list: listie
-                        });
-                    }
-                }
-                else {
-                    Alert.alert("Echec", response.error,
-                        [
-                            {text: translate("back"), style : "cancel"}
-                        ]);
-                }
-            })
-            .catch(error => console.log("Une erreur est survenue " +error))
-    }
-
     componentDidMount(){
-        getWaitingList(global.merchantPointID, global.token)
+        getInitiatedOperations(global.merchantPointID, global.token)
             .then(data => {
                 this.setState({
                     isLoading: false,
@@ -74,8 +51,8 @@ class WaitingList extends React.Component {
         });
 
         const newData = this.array.filter(item => {
-            const itemData = item.customernumber;
-            const textData = text;
+            const itemData = item.customernumber+" "+item.type.toUpperCase()+" "+item.expectedvalidationdate;
+            const textData = text.toUpperCase();
 
             return itemData.indexOf(textData) > -1;
         });
@@ -92,7 +69,7 @@ class WaitingList extends React.Component {
     _renderHeader = () =>{
         return (
             <SearchBar
-                placeholder={translate("WAITINGLIST_search")}
+                placeholder={translate("search")}
                 lightTheme
                 round
                 onChangeText={text => this._searchFilterFunction(text)}
@@ -101,6 +78,7 @@ class WaitingList extends React.Component {
             />
         );
     };
+
 
 
     render() {
@@ -112,9 +90,9 @@ class WaitingList extends React.Component {
                     renderItem={ ({item}) =>
                         <ListItem
                             key={item.id.toString()}
-                            title={item.customernumber}
-                            subtitle={moment(item.date).format("DD/MM/YYYY, HH:mm:ss")}
-                            onLongPress={() => {this._serve(item.id)}}
+                            title={moment(item.expectedvalidationdate).format("DD/MM/YYYY, HH:mm") + "   - " + item.customernumber}
+                            subtitle={translate(item.type) + "  " +item.amount+" XAF"}
+                            onPress={() => {this.props.navigation.navigate("OperationDetails", {operation: item})}}
                         />
 
                     }
@@ -147,4 +125,4 @@ const styles = EStyleSheet.create({
     }
 });
 
-export default WaitingList
+export default InitiatedOperations

@@ -81,3 +81,18 @@ export function logout(token){
         .then(response => response)
         .catch(error => console.log("Une erreur est survenue lors de la collecte" + error))
 }
+
+export function getInitiatedOperations(storeID, token){
+
+    const url = URL+"merchantpoints/"+storeID+"/transactions";
+
+    return fetch(url, {
+        method: "GET",
+        headers: {
+            "Authorization" : "Token "+token,
+            "Content-Type" : "application/json"
+        }
+    })
+        .then(response => response.json())
+        .catch(error => console.log("Une erreur est survenue lors de la collecte" + error))
+}

@@ -2,6 +2,7 @@ import React from "react"
 import {View, TouchableOpacity, Image, Text} from "react-native"
 import EStyleSheet from "react-native-extended-stylesheet";
 import {logout} from "../API/WalletApi"
+import translate from "../utils/language"
 
 class Menu extends React.Component {
     _logOut(){
@@ -18,15 +19,16 @@ class Menu extends React.Component {
         return (
             <View style={styles.main_container}>
                 <View style={styles.menu_item}>
-                    <TouchableOpacity style={styles.menu_touchable}>
+                    <TouchableOpacity style={styles.menu_touchable}
+                                    onPress={() => this.props.navigation.navigate("InitiatedOperations")}>
                         <Image source={require("../Images/todo.png")} style={styles.menu_image}/>
-                        <Text>Liste des opérations initiées</Text>
+                        <Text> {translate("MENU_operations")} </Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.menu_item}>
                     <TouchableOpacity style={styles.menu_touchable} onPress={() => this._logOut()}>
                         <Image source={require("../Images/logout.png")} style={styles.menu_image}/>
-                        <Text>Déconnexion</Text>
+                        <Text> {translate("MENU_signOut")} </Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -40,7 +42,6 @@ const styles = EStyleSheet.create({
         flexDirection: "column",
         justifyContent: "flex-start",
         backgroundColor: "#ededed",
-        marginTop: 22
     },
     menu_item: {
         flexDirection: "column",

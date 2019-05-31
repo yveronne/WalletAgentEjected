@@ -18,9 +18,4 @@ export const setLocale = (locale) => {
 
 export const getCurrentLocale = () => I18n.locale;
 
-export const translateHeaderText = (langKey) => ({screenPops}) => {
-    const title = I18n.translate(langKey, screenPops.language);
-    return {title};
-};
-
 export default I18n.translate.bind(I18n);
