@@ -51,7 +51,8 @@ class InitiatedOperations extends React.Component {
         });
 
         const newData = this.array.filter(item => {
-            const itemData = item.customernumber+" "+item.type.toUpperCase()+" "+item.expectedvalidationdate;
+            //const itemData = item.customernumber+" "+item.type.toUpperCase()+" "+item.expectedvalidationdate;
+            const itemData = item.otp;
             const textData = text.toUpperCase();
 
             return itemData.indexOf(textData) > -1;

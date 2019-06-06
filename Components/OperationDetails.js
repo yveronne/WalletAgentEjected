@@ -1,8 +1,9 @@
 import React from "react"
-import {View, Text} from "react-native"
+import {View, Text, TouchableOpacity, Alert} from "react-native"
 import translate from "../utils/language";
 import EStyleSheet from "react-native-extended-stylesheet";
 import moment from "moment"
+import {validateTransaction} from "../API/WalletApi"
 
 
 class OperationDetails extends React.Component {
@@ -31,6 +32,25 @@ class OperationDetails extends React.Component {
         }
     }
 
+    _validate(){
+        validateTransaction(parseInt(this.state.operation.otp), global.token)
+            .then(response => {
+                if(response.message != null){
+                    Alert.alert("Succès", response.message,
+                        [
+                            {text: "OK", style: "cancel"}
+                        ]);
+                }
+                else if (response.error != null){
+                    Alert.alert("Echec", response.error,
+                        [
+                            {text: translate("back"), style : "cancel"}
+                        ]);
+                }
+            })
+            .catch(error => console.log(error))
+    }
+
 
     render() {
         return (
@@ -56,6 +76,12 @@ class OperationDetails extends React.Component {
                     <Text style={styles.title}> {translate("expectedDate") +" :"} </Text>
                     <Text style={styles.value}>{moment(this.state.operation.expectedvalidationdate).format("DD/MM/YYYY, HH:mm")}</Text>
                 </View>
+                <View style={styles.button_container}>
+                        <TouchableOpacity onPress={() => {this._validate()}}
+                                          style={styles.button}>
+                            <Text style={styles.button_text}> Valider </Text>
+                        </TouchableOpacity>
+                    </View>
             </View>
         )
     }
@@ -81,7 +107,26 @@ const styles = EStyleSheet.create({
         fontSize: "1.8rem",
         color: "#000000"
 
-    }
+    },
+    button_container: {
+        flex: 1,
+        justifyContent: "center",
+        textAlign: "center",
+        flexDirection: "row",
+        paddingBottom: "$heightie"
+    },
+    button: {
+        backgroundColor: "#FF0000",
+        borderRadius: 10,
+        height: 50,
+        width: "$width/1.5",
+        justifyContent: "center"
+    },
+    button_text: {
+        textAlign: "center",
+        color: "#FFFFFF",
+        fontSize: "2.3rem"
+    },
 });
 
 export default OperationDetails

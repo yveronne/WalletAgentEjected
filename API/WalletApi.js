@@ -1,6 +1,6 @@
 import moment from "moment";
 
-const URL = "http://192.168.99.37:8000/";
+const URL = "http://192.168.1.5:8000/";
 
 export function logUser(username, password){
     const url = URL+"merchant/login";
