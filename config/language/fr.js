@@ -28,7 +28,9 @@ export default {
     expectedDate: "Date de validation attendue",
     Depot: "Dépôt",
     Retrait: "Retrait",
-    Paiement: "Paiement"
+    Paiement: "Paiement",
+    true: "Oui",
+    false: "Non"
 
 
 }

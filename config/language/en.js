@@ -28,5 +28,7 @@ export default {
     expectedDate: "Expected validation date",
     Depot: "Deposit",
     Retrait: "Withdrawal",
-    Paiement: "Payment"
+    Paiement: "Payment",
+    true: "Yes",
+    false: "No"
 }

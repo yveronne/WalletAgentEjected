@@ -28,8 +28,8 @@ class ValidateOperation extends React.Component {
         this.code = text
     }
 
-    _validate(){
-        validateTransaction(parseInt(this.code), global.token)
+    _validate(amount){
+        validateTransaction(amount, parseInt(this.code), global.token)
             .then(response => {
                 if(response.message != null){
                     Alert.alert("Succès", response.message,
@@ -56,7 +56,7 @@ class ValidateOperation extends React.Component {
         var amount = parseFloat(qrArray[1]);
         Alert.alert("Confirmation", translate("OPERATION_scanConfirmation") +amount ,
             [
-                {text: translate("validate"), onPress: () => this._validate()},
+                {text: translate("validate"), onPress: () => this._validate(amount)},
                 {text: translate("cancelie"), style: "cancel"}
             ]);
     };

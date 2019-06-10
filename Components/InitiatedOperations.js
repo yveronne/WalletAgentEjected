@@ -92,10 +92,9 @@ class InitiatedOperations extends React.Component {
                         <ListItem
                             key={item.id.toString()}
                             title={moment(item.expectedvalidationdate).format("DD/MM/YYYY, HH:mm") + "   - " + item.customernumber}
-                            subtitle={translate(item.type) + "  " +item.amount+" XAF"}
+                            subtitle={translate(item.type)}
                             onPress={() => {this.props.navigation.navigate("OperationDetails", {operation: item})}}
                         />
-
                     }
                     keyExtractor={item => item.id.toString()}
                     ItemSeparatorComponent={this._renderSeparator}

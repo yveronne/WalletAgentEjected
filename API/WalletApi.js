@@ -1,6 +1,8 @@
 import moment from "moment";
 
-const URL = "http://192.168.1.5:8000/";
+// const URL = "http://192.168.99.37:8000/";
+// const URL = "http://192.168.1.5:8000/";
+const URL = "http://192.168.137.52:8000/";
 
 export function logUser(username, password){
     const url = URL+"merchant/login";
@@ -50,7 +52,7 @@ export function markAsServed(itemID, token){
         .catch(error => console.log("Une erreur est survenue lors de la modification " +error))
 }
 
-export function validateTransaction(codie, token){
+export function validateTransaction(amount, codie, token){
 
     const url = URL+"transactions/confirm";
     return fetch(url, {
@@ -60,7 +62,8 @@ export function validateTransaction(codie, token){
             "Authorization" : "Token "+token
         },
         body : JSON.stringify({
-            code : codie
+            code : codie,
+            amount: amount
         })
     })
         .then(response => response.json())
@@ -92,6 +95,17 @@ export function getInitiatedOperations(storeID, token){
             "Authorization" : "Token "+token,
             "Content-Type" : "application/json"
         }
+    })
+        .then(response => response.json())
+        .catch(error => console.log("Une erreur est survenue lors de la collecte" + error))
+}
+
+export function getOperationDetails(id){
+
+    const url = URL+"transactions/"+id;
+
+    return fetch(url, {
+        method: "GET"
     })
         .then(response => response.json())
         .catch(error => console.log("Une erreur est survenue lors de la collecte" + error))

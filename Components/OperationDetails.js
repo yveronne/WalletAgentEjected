@@ -1,9 +1,9 @@
 import React from "react"
-import {View, Text, TouchableOpacity, Alert} from "react-native"
+import {View, Text, TouchableOpacity, Alert, ActivityIndicator} from "react-native"
 import translate from "../utils/language";
 import EStyleSheet from "react-native-extended-stylesheet";
 import moment from "moment"
-import {validateTransaction} from "../API/WalletApi"
+import {validateTransaction, getOperationDetails} from "../API/WalletApi"
 
 
 class OperationDetails extends React.Component {
@@ -16,7 +16,18 @@ class OperationDetails extends React.Component {
         super(props);
 
         this.state= {
-            operation : this.props.navigation.getParam("operation")
+            operation : this.props.navigation.getParam("operation"),
+            isLoading: false
+        }
+    }
+
+    _displayLoading(){
+        if(this.state.isLoading){
+            return (
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large"/>
+                </View>
+            )
         }
     }
 
@@ -33,7 +44,7 @@ class OperationDetails extends React.Component {
     }
 
     _validate(){
-        validateTransaction(parseInt(this.state.operation.otp), global.token)
+        validateTransaction(this.state.operation.amount, parseInt(this.state.operation.otp), global.token)
             .then(response => {
                 if(response.message != null){
                     Alert.alert("Succès", response.message,
@@ -51,10 +62,38 @@ class OperationDetails extends React.Component {
             .catch(error => console.log(error))
     }
 
+    _displayValidationButton(){
+        if(!this.state.operation.wasvalidatedbymerchant){
+            return (
+                <View style={styles.button_container}>
+                    <TouchableOpacity onPress={() => {this._validate()}}
+                                      style={styles.button}>
+                        <Text style={styles.button_text}> Valider </Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+    }
+
+    _refresh(){
+        const id = this.state.operation.id;
+        getOperationDetails(id)
+            .then(data => {
+                this.setState({
+                    isLoading: false,
+                    operation: data
+
+                })
+            })
+            .catch(error => console.log(error))
+
+    }
+
 
     render() {
         return (
-            <View style={styles.main_container}>
+            <TouchableOpacity style={styles.main_container} onPress={() => this._refresh()}>
+                {this._displayLoading()}
                 <View style={styles.text_container}>
                     <Text style={styles.title}> {translate("type") + " :"}  </Text>
                     <Text style={styles.value}>{translate(this.state.operation.type)}</Text>
@@ -76,13 +115,12 @@ class OperationDetails extends React.Component {
                     <Text style={styles.title}> {translate("expectedDate") +" :"} </Text>
                     <Text style={styles.value}>{moment(this.state.operation.expectedvalidationdate).format("DD/MM/YYYY, HH:mm")}</Text>
                 </View>
-                <View style={styles.button_container}>
-                        <TouchableOpacity onPress={() => {this._validate()}}
-                                          style={styles.button}>
-                            <Text style={styles.button_text}> Valider </Text>
-                        </TouchableOpacity>
-                    </View>
-            </View>
+                <View style={styles.text_container}>
+                    <Text style={styles.title}> A été validée par le client : </Text>
+                    <Text style={styles.value}>{translate(this.state.operation.wasvalidatedbycustomer.toString())}</Text>
+                </View>
+                {this._displayValidationButton()}
+            </TouchableOpacity>
         )
     }
 }
@@ -92,20 +130,41 @@ const styles = EStyleSheet.create({
         flex: 1,
         backgroundColor: "#ededed"
     },
+    loadingContainer : {
+        position: "absolute",
+        left: 0,
+        right: 0,
+        top: 100,
+        bottom: 0,
+        alignItems: "center",
+        justifyContent: "center"
+    },
     text_container: {
-        flexDirection: "row",
-        alignItems: "flex-end",
+        flexDirection: "column",
         paddingBottom: "$heightie",
-        height: "$heightie*4"
+        paddingLeft: "$heightie/2",
+        height: "$heightie*4",
+        borderBottomColor: "#5c5c5c",
+        borderStyle: "dashed",
+        borderBottomWidth: 1,
+        flex: 1
     },
     title: {
         fontWeight: "bold",
-        fontSize: "1.9rem",
-        color: "#000000"
+        fontSize: "1.7rem",
+        textTransform: "uppercase",
+        color: "#000000",
+        paddingBottom: "$heightie/2",
+        marginTop: "$heightie/2",
+        marginLeft: 0,
+        paddingLeft: 0,
     },
     value: {
-        fontSize: "1.8rem",
-        color: "#000000"
+        fontSize: "1.6rem",
+        color: "#000000",
+        marginBottom: "$heightie/2",
+        marginLeft: 0,
+        paddingLeft: 0,
 
     },
     button_container: {
@@ -113,7 +172,8 @@ const styles = EStyleSheet.create({
         justifyContent: "center",
         textAlign: "center",
         flexDirection: "row",
-        paddingBottom: "$heightie"
+        paddingBottom: "$heightie",
+        paddingTop: "$heightie",
     },
     button: {
         backgroundColor: "#FF0000",
