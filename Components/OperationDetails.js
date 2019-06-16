@@ -1,7 +1,7 @@
 import React from "react"
 import {View, Text, TouchableOpacity, Alert, ActivityIndicator} from "react-native"
-import translate from "../utils/language";
-import EStyleSheet from "react-native-extended-stylesheet";
+import translate from "../utils/language"
+import EStyleSheet from "react-native-extended-stylesheet"
 import moment from "moment"
 import {validateTransaction, getOperationDetails} from "../API/WalletApi"
 

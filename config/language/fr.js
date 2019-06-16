@@ -10,6 +10,8 @@ export default {
     NAVIGATION_validateOperation: "Valider une transaction",
     NAVIGATION_initiatedOperations: "Transactions initiées",
     NAVIGATION_operationDetails: "Détails de la transaction",
+    NAVIGATION_waitingListDetails: "Détails",
+    NAVIGATION_changePassword: "Changer de mot de passe",
     OPERATION_code: "Code de la transaction",
     validate: "Valider",
     cancelie: "Annuler",
@@ -17,6 +19,7 @@ export default {
     OPERATION_scan: "Scanner le code QR",
     OPERATION_scanConfirmation: "Paiement de XAF ",
     MENU_operations: "Liste des transactions initiées",
+    MENU_changePassword: "Changer le mot de passe",
     MENU_signOut: "Se déconnecter",
     WAITINGLIST_search: "Chercher un numéro de téléphone",
     search: "Rechercher...",
@@ -30,7 +33,12 @@ export default {
     Retrait: "Retrait",
     Paiement: "Paiement",
     true: "Oui",
-    false: "Non"
+    false: "Non",
+    reason: "Motif d'insertion dans la file d'attente",
+    FORM_oldPassword: "Ancien mot de passe",
+    FORM_newPassword: "Nouveau mot de passe",
+    PLACEHOLDER_oldPassword: "Entrer l'ancien mot de passe...",
+    PLACEHOLDER_newPassword: "Entrer le nouveau mot de passe...",
 
 
 }

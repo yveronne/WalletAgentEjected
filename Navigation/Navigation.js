@@ -7,11 +7,26 @@ import ValidateOperation from "../Components/ValidateOperation"
 import Menu from "../Components/Menu"
 import InitiatedOperations from "../Components/InitiatedOperations"
 import OperationDetails from "../Components/OperationDetails"
+import ChangePassword from "../Components/ChangePassword"
+import WaitingListDetails from "../Components/WaitingListDetails"
 
 
 const waitingListStack = createStackNavigator({
     WaitingList_stack: {
         screen : WaitingList,
+        navigationOptions: ({navigation}) => ({
+            headerStyle: {
+                backgroundColor: "#FF0000"
+            },
+            headerTintColor: "#FFFFFF",
+            headerTitleStyle: {
+                fontWeight: "bold",
+                color: "#FFFFFF"
+            }
+        })
+    },
+    Details: {
+        screen: WaitingListDetails,
         navigationOptions: ({navigation}) => ({
             headerStyle: {
                 backgroundColor: "#FF0000"
@@ -75,7 +90,21 @@ const menuStack = createStackNavigator({
                 color: "#FFFFFF"
             }
         })
+    },
+    ChangePassword: {
+        screen: ChangePassword,
+        navigationOptions: ({navigation}) => ({
+            headerStyle: {
+                backgroundColor: "#FF0000"
+            },
+            headerTintColor: "#FFFFFF",
+            headerTitleStyle: {
+                fontWeight: "bold",
+                color: "#FFFFFF"
+            }
+        })
     }
+
 
 
 });

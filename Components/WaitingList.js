@@ -114,6 +114,7 @@ class WaitingList extends React.Component {
                             key={item.id.toString()}
                             title={item.customernumber}
                             subtitle={moment(item.date).format("DD/MM/YYYY, HH:mm:ss")}
+                            onPress={() =>this.props.navigation.navigate("Details", {item : item})}
                             onLongPress={() => {this._serve(item.id)}}
                         />
 

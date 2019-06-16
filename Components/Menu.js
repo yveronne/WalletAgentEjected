@@ -26,6 +26,13 @@ class Menu extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.menu_item}>
+                    <TouchableOpacity style={styles.menu_touchable}
+                                      onPress={() => this.props.navigation.navigate("ChangePassword")}>
+                        <Image source={require("../Images/logout.png")} style={styles.menu_image}/>
+                        <Text>{translate("MENU_changePassword")} </Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.menu_item}>
                     <TouchableOpacity style={styles.menu_touchable} onPress={() => this._logOut()}>
                         <Image source={require("../Images/logout.png")} style={styles.menu_image}/>
                         <Text> {translate("MENU_signOut")} </Text>

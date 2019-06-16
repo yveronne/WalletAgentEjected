@@ -1,8 +1,9 @@
 import moment from "moment";
 
 // const URL = "http://192.168.99.37:8000/";
-// const URL = "http://192.168.1.5:8000/";
-const URL = "http://192.168.137.52:8000/";
+const URL = "http://192.168.1.5:8000/";
+//const URL = "http://192.168.137.52:8000/";
+// const URL = "http://192.168.43.17:8000/";
 
 export function logUser(username, password){
     const url = URL+"merchant/login";
@@ -106,6 +107,25 @@ export function getOperationDetails(id){
 
     return fetch(url, {
         method: "GET"
+    })
+        .then(response => response.json())
+        .catch(error => console.log("Une erreur est survenue lors de la collecte" + error))
+}
+
+export function changePassword(oldPass, newPass, token){
+
+    const url = URL+"changepassword";
+
+    return fetch(url, {
+        method: "PATCH",
+        headers: {
+            "Content-Type" : 'application/json',
+            "Authorization" : "Token "+token
+        },
+        body : JSON.stringify({
+            oldpassword : oldPass,
+            newpassword: newPass
+        })
     })
         .then(response => response.json())
         .catch(error => console.log("Une erreur est survenue lors de la collecte" + error))
